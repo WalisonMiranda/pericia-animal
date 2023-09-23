@@ -4,7 +4,7 @@ export default function TabRoutesLayout() {
     return (
         <Tabs>
             <Tabs.Screen name="index" options={{ title: "Início" }} />
-            <Tabs.Screen name="expertiseForm" options={{ title: "Formulário" }} />
+            <Tabs.Screen name="ExpertiseForm" options={{ title: "Formulário" }} />
         </Tabs>
     )
 }
