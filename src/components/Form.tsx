@@ -8,8 +8,9 @@ import {
   Button, 
   StyleSheet } from 'react-native';
 
-import DateInput from './DateInput';
-import CustomInputText from './CustomInputText';
+import DatePicker from "react-native-date-picker"
+import CustomInputRadio from './CustomInputRadio';
+
 
 
 import { ItemProps } from './Item';
@@ -18,96 +19,91 @@ interface FormProps extends ItemProps {
 }
 
 export default function Form() {
+  
   const [formData, setFormData] = useState<ItemProps>({
-    denuntiation_date: null,
-    inspection_date: null,
-    inspection_time: null,
-    accused_name: null,
-    report_number: null,
-    report_address: null,
-    neighborhood: null,
-    city: null,
-    responsible_for_completing: null,
-    operating_mesoregion: null,
-    species: null,
-    gender: null,
-    age: null,
-    size: null,
-    race: null,
-    pelage: null,
+    denuntiation_date: new Date(Date.now()),
+    inspection_date: new Date(Date.now()),
+    inspection_time: new Date(Date.now()),
+    accused_name: '',
+    report_number: '',
+    report_address: '',
+    neighborhood: '',
+    city: '',
+    responsible_for_completing: '',
+    operating_mesoregion: '',
+    species: '',
+    gender: '',
+    age: '',
+    size: '',
+    race: '',
+    pelage: '',
     animals_own_number: {
-      dog: null,
-      cat: null,
-      rabbit: null,
-      horse: null,
-      others: null,
+      dog: '',
+      cat: '',
+      rabbit: '',
+      horse: '',
+      others: '',
     },
-    animal_observations: null,
+    animal_observations: '',
 
-    body_condition: null,
-    has_fresh_water: null,
-    animal_food: null,
-    food_frequency: null,
-    drinking_condition: null,
-    feeder_condition: null,
-    nutritional_observations: null,
-    opinion_regarding_nutritional: null,
+    body_condition: '',
+    has_fresh_water: '',
+    animal_food: '',
+    food_frequency: '',
+    drinking_condition: '',
+    feeder_condition: '',
+    nutritional_observations: '',
+    opinion_regarding_nutritional: '',
 
-    has_fixed_shelter: null,
-    has_weather_protection: null,
-    has_comfort_to_rest: null,
-    can_do_short_run: null,
-    animal_per_species_numbers: null,
-    environment_and_containment_type: null,
-    if_tied_is_released_some_time: null,
-    surfaces_in_contact_with_the_animal: null,
-    has_grass_or_ground_contact: null,
-    are_poor_cleaning_conditions: null,
-    comfort_observations: null,
-    opinion_regarding_comfort: null,
+    has_fixed_shelter: '',
+    has_weather_protection: '',
+    has_comfort_to_rest: '',
+    can_do_short_run: '',
+    animal_per_species_numbers: '',
+    environment_and_containment_type: '',
+    if_tied_is_released_some_time: '',
+    surfaces_in_contact_with_the_animal: '',
+    has_grass_or_ground_contact: '',
+    are_poor_cleaning_conditions: '',
+    comfort_observations: '',
+    opinion_regarding_comfort: '',
 
-    animal_has_pain: null,
-    how_hes_walking: null,
-    has_purulent_secretions: null,
-    has_diarrhea: null,
-    has_parasites_infestation: null,
-    pelage_conditions: null,
-    has_an_injury: null,
-    went_out_alone: null,
-    why_went_out_alone: null,
-    health_observations: null,
-    opinion_regarding_health: null,
+    animal_has_pain: '',
+    how_hes_walking: '',
+    has_purulent_secretions: '',
+    has_diarrhea: '',
+    has_parasites_infestation: '',
+    pelage_conditions: '',
+    has_an_injury: '',
+    went_out_alone: '',
+    why_went_out_alone: '',
+    health_observations: '',
+    opinion_regarding_health: '',
 
     animal_things: {
-      dog_can_do_dog_things: null,
-      cat_can_do_cat_things: null,
-      horse_can_do_horse_things: null,
+      dog_can_do_dog_things: '',
+      cat_can_do_cat_things: '',
+      horse_can_do_horse_things: '',
     },
-    animal_alone_all_day: null,
-    are_there_others_animals: null,
-    has_strange_behaviors: null,
-    is_the_animal_alert: null,
-    avoid_or_run_away_in_fear: null,
-    cart_driver_use_whip: null,
-    behavior_observations: null,
-    opinion_regarding_behavior: null,
+    animal_alone_all_day: '',
+    are_there_others_animals: '',
+    has_strange_behaviors: '',
+    is_the_animal_alert: '',
+    avoid_or_run_away_in_fear: '',
+    cart_driver_use_whip: '',
+    behavior_observations: '',
+    opinion_regarding_behavior: '',
 
-    inadequacy_of_which_indicators: null,
-    well_being_degree: null,
-    incidents_of_mistreatment: null,
-    generated_a_police_report: null,
+    inadequacy_of_which_indicators: '',
+    well_being_degree: '',
+    incidents_of_mistreatment: '',
+    generated_a_police_report: '',
 
   });
-  // const [formData, setFormData] = useState({
-  //   name: '',
-  //   selectedDate1: new Date(),
-  //   selectedDate2: new Date(),
-  //   selectedDate3: new Date(),
-  // });
 
-  const handleDateChange = (field, date) => {
-    setFormData({ ...formData, [field]: date });
-  };
+  const [denunciationDateOpen, setDenunciationDateOpen] = useState(false);
+  const [inspectionDateOpen, setInspectionDateOpen] = useState(false);
+  const [inspectionTimeOpen, setInspectionTimeOpen] = useState(false);
 
   const handleRadioChange = (field: keyof ItemProps, value: string) => {
     setFormData({ ...formData, [field]: value });
@@ -126,42 +122,72 @@ export default function Form() {
     <ScrollView>
       <View>
         <Text>Denuntiation Date:</Text>
-        {/* <DateInput
-          mode="date"
-          onChange={(date) => handleDateChange('selectedDate2', date)}
-        /> */}
+        <>
+          <Button title="Data da denúncia" onPress={() => setDenunciationDateOpen(true)} />
+          <DatePicker
+            mode='date'
+            locale='pt'
+            modal
+            open={denunciationDateOpen}
+            // date={formData.denuntiation_date}
+            date={new Date()}
+            onConfirm={(date) => {
+              setDenunciationDateOpen(false)
+              setFormData({...formData, denuntiation_date: date});
+            }}
+            onCancel={() => {
+              setDenunciationDateOpen(false)
+            }}          
+          />
+        </>
 
         <Text>Inspection Date:</Text>
-        {/* <DateInput
-          mode="date"
-          onChange={(date) => handleDateChange('selectedDate2', date)}
-        /> */}
-
+        <>
+          <Button title="Data de inspeção" onPress={() => setInspectionDateOpen(true)} />
+          <DatePicker
+            mode='date'
+            // locale='pt'
+            modal
+            open={inspectionDateOpen}
+            // date={formData.inspection_date}
+            date={new Date()}
+            onConfirm={(date) => {
+              setInspectionDateOpen(false)
+              setFormData({...formData, inspection_date: date});
+            }}
+            onCancel={() => {
+              setInspectionDateOpen(false)
+            }}          
+          />
+        </>
 
         <Text>Inspection Time:</Text>
-        {/* <DateInput
-          mode="date"
-          onChange={(date) => handleDateChange('selectedDate2', date)}
-        /> */}
-
-
-      {/* Repita o código acima para os outros campos de data e hora, se necessário */}
+        <>
+          <Button title="Hora da inspeção" onPress={() => setInspectionTimeOpen(true)} />
+          <DatePicker
+            mode='time'
+            // locale='pt'
+            modal
+            open={inspectionTimeOpen}
+            // date={formData.inspection_time}
+            date={new Date()}
+            onConfirm={(date) => {
+              setInspectionTimeOpen(false)
+              setFormData({...formData, inspection_time: date});
+            }}
+            onCancel={() => {
+              setInspectionTimeOpen(false)
+            }}          
+          />
+        </>
 
         <Text>Nome do Denunciado:</Text>
         <TextInput
           style={styles.input}
           onChangeText={(text) => setFormData({ ...formData, accused_name: text })}
           value={formData.accused_name}
-          // placeholder="input"
         />
       
-        <Text>Número da Ocorrência:</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={(text) => setFormData({ ...formData, report_number: text })}
-          value={formData.report_number}
-        />
-
         <Text>Número da ocorrência:</Text>
         <TextInput
             style={styles.input}
@@ -220,7 +246,7 @@ export default function Form() {
 
         <Text>Idade:</Text>
         <TextInput
-            keyboardType="numeric"
+            inputMode="numeric"
             style={styles.input}
             onChangeText={(text) => setFormData({ ...formData, age: text })}
             value={formData.age}
@@ -247,30 +273,82 @@ export default function Form() {
             value={formData.pelage}
         />
 
-      <Text>Número de animais que possui:</Text>
+      <Text style={{ marginTop: "16px" }}>
+        Número de animais que possui:
+      </Text>
+
+      <Text>Cachorro:</Text>
       <TextInput
+          inputMode='numeric'
           style={styles.input}
-          onChangeText={(text) => setFormData({ ...formData, animals_own_number.dog: text })}
+          // onChangeText={(text) => setFormData({ ...formData.animals_own_number, dog: text })}
+          onChangeText={(value) => setFormData({ 
+            ...formData,
+            animals_own_number: {
+              ...formData.animals_own_number,
+              dog: value
+            }
+          })}
           value={formData.animals_own_number.dog}
       />
+
+      <Text>Gato:</Text>
       <TextInput
+          inputMode='numeric'
           style={styles.input}
-          onChangeText={(text) => setFormData({ ...formData, animals_own_number.cat: text })}
+          // onChangeText={(value) => setFormData({ ...formData.animals_own_number, cat: value })}
+          onChangeText={(value) => setFormData({ 
+            ...formData,
+            animals_own_number: {
+              ...formData.animals_own_number,
+              cat: value
+            }
+          })}
           value={formData.animals_own_number.cat}
       />
+
+      <Text>Cavalo:</Text>
       <TextInput
+          inputMode='numeric'
           style={styles.input}
-          onChangeText={(text) => setFormData({ ...formData, animals_own_number.horse: text })}
+          // onChangeText={(text) => setFormData({ ...formData.animals_own_number, horse: text })}
+          onChangeText={(value) => setFormData({ 
+            ...formData,
+            animals_own_number: {
+              ...formData.animals_own_number,
+              horse: value
+            }
+          })}
           value={formData.animals_own_number.horse}
       />
+
+      <Text>Coelho:</Text>
       <TextInput
+          inputMode='numeric'
           style={styles.input}
-          onChangeText={(text) => setFormData({ ...formData, animals_own_number.rabbit: text })}
+          // onChangeText={(text) => setFormData({ ...formData.animals_own_number, rabbit: text })}
+          onChangeText={(value) => setFormData({ 
+            ...formData,
+            animals_own_number: {
+              ...formData.animals_own_number,
+              rabbit: value
+            }
+          })}
           value={formData.animals_own_number.rabbit}
       />
+
+      <Text>Outros:</Text>
       <TextInput
+          inputMode='numeric'
           style={styles.input}
-          onChangeText={(text) => setFormData({ ...formData, animals_own_number.others: text })}
+          // onChangeText={(text) => setFormData({ ...formData.animals_own_number, others: text })}
+          onChangeText={(value) => setFormData({ 
+            ...formData,
+            animals_own_number: {
+              ...formData.animals_own_number,
+              others: value
+            }
+          })}
           value={formData.animals_own_number.others}
       />
 
@@ -291,11 +369,11 @@ export default function Form() {
         />
 
         <Text>Has Fresh Water?</Text>
-        {/* <RadioInput
+        <CustomInputRadio 
           options={['Sim', 'Não']}
           selected={formData.has_fresh_water}
-          onSelect={(value) => handleRadioChange('has_fresh_water', value)}
-        /> */}
+          onSelect={(value) => setFormData({...formData, has_fresh_water: value})}
+        />
 
         <Text>Tipo de ração:</Text>
         <TextInput
@@ -424,11 +502,177 @@ export default function Form() {
               value={formData.animal_has_pain}
           />
 
-        <Text>Condição do corpo:</Text>
+        <Text>Como ele anda?</Text>
         <TextInput
             style={styles.input}
-            onChangeText={(text) => setFormData({ ...formData, body_condition: text })}
-            value={formData.body_condition}
+            onChangeText={(text) => setFormData({ ...formData, how_hes_walking: text })}
+            value={formData.how_hes_walking}
+        />
+
+        <Text>Tem secreção purulenta?</Text>
+        <TextInput
+            style={styles.input}
+            onChangeText={(text) => setFormData({ ...formData, has_purulent_secretions: text })}
+            value={formData.has_purulent_secretions}
+        />
+
+        <Text>Tem diarréia?</Text>
+        <TextInput
+            style={styles.input}
+            onChangeText={(text) => setFormData({ ...formData, has_diarrhea: text })}
+            value={formData.has_diarrhea}
+        />
+
+        <Text>Tem infestação de parasitas?</Text>
+        <TextInput
+            style={styles.input}
+            onChangeText={(text) => setFormData({ ...formData, has_parasites_infestation: text })}
+            value={formData.has_parasites_infestation}
+        />
+
+        {/* <Text>Condição da pelagem:</Text>
+        <TextInput
+            style={styles.input}
+            onChangeText={(text) => setFormData({ ...formData, pelage_conditions: text })}
+            value={formData.pelage_conditions}
+        /> */}
+
+        {/* <Text>Tem algum ferimento</Text>
+        <TextInput
+            style={styles.input}
+            onChangeText={(text) => setFormData({ ...formData, has_an_injury: text })}
+            value={formData.has_an_injury}
+        /> */}
+
+        <Text>Sai para a rua sozinho?</Text>
+        <TextInput
+            style={styles.input}
+            onChangeText={(text) => setFormData({ ...formData, went_out_alone: text })}
+            value={formData.went_out_alone}
+        />
+
+        <Text>Por quê sai sozinho?</Text>
+        <TextInput
+            style={styles.input}
+            onChangeText={(text) => setFormData({ ...formData, why_went_out_alone: text })}
+            value={formData.why_went_out_alone}
+        />
+
+          <Text>Observações de saúde:</Text>
+          <TextInput
+            multiline
+            value={formData.health_observations}
+            onChangeText={(text) => handleTextareaChange('health_observations', text)}
+          />
+
+          {/* OPINION REGARDING HEALTH */}
+
+
+          {/* COISAS DE ANIMAIS */}
+
+        <Text>Coisas de animais:</Text>
+
+        <Text>Cachorro consegue fazer coisas de cachorro:</Text>
+        <TextInput
+            style={styles.input}
+            onChangeText={(text) => setFormData({ ...formData.animal_things, dog_can_do_dog_things: text })}
+            value={formData.animal_things.dog_can_do_dog_things}
+        />
+
+        <Text>Gato consegue fazer coisas de gato:</Text>
+        <TextInput
+            style={styles.input}
+            onChangeText={(text) => setFormData({ ...formData.animal_things, cat_can_do_cat_things: text })}
+            value={formData.animal_things.cat_can_do_cat_things}
+        />
+
+        <Text>Cavalo consegue fazer coisas de cavalo:</Text>
+        <TextInput
+            style={styles.input}
+            onChangeText={(text) => setFormData({ ...formData.animal_things, horse_can_do_horse_things: text })}
+            value={formData.animal_things.horse_can_do_horse_things}
+        />
+
+        <Text>O animal fica sozinho o dia todo?</Text>
+        <TextInput
+            style={styles.input}
+            onChangeText={(text) => setFormData({ ...formData, animal_alone_all_day: text })}
+            value={formData.animal_alone_all_day}
+        />
+
+        <Text>Há outros animais?</Text>
+        <TextInput
+            style={styles.input}
+            onChangeText={(text) => setFormData({ ...formData, are_there_others_animals: text })}
+            value={formData.are_there_others_animals}
+        />
+
+        <Text>O animal tem comportamentos estranhos?</Text>
+        <TextInput
+            style={styles.input}
+            onChangeText={(text) => setFormData({ ...formData, has_strange_behaviors: text })}
+            value={formData.has_strange_behaviors}
+        />
+
+        <Text>O animal está alerta?</Text>
+        <TextInput
+            style={styles.input}
+            onChangeText={(text) => setFormData({ ...formData, is_the_animal_alert: text })}
+            value={formData.is_the_animal_alert}
+        />
+
+        <Text>O animal evita ou foge de medo?</Text>
+        <TextInput
+            style={styles.input}
+            onChangeText={(text) => setFormData({ ...formData, avoid_or_run_away_in_fear: text })}
+            value={formData.avoid_or_run_away_in_fear}
+        />
+
+        <Text>O carroceiro usa chicote?</Text>
+        <TextInput
+            style={styles.input}
+            onChangeText={(text) => setFormData({ ...formData, cart_driver_use_whip: text })}
+            value={formData.cart_driver_use_whip}
+        />
+
+          <Text>Observações de comportamento:</Text>
+          <TextInput
+            multiline
+            value={formData.behavior_observations}
+            onChangeText={(text) => handleTextareaChange('behavior_observations', text)}
+          />
+
+          {/* OPINION REGARDING BEHAVIOR */}
+
+
+          {/* TOPIC INDICATORS */}
+
+        <Text>Inadequação de qual indicador?</Text>
+        <TextInput
+            style={styles.input}
+            onChangeText={(text) => setFormData({ ...formData, inadequacy_of_which_indicators: text })}
+            value={formData.inadequacy_of_which_indicators}
+        />
+
+        <Text>Grau de bem estar</Text>
+        <TextInput
+            style={styles.input}
+            onChangeText={(text) => setFormData({ ...formData, well_being_degree: text })}
+            value={formData.well_being_degree}
+        />
+
+        <Text>Incidents of mistreatment</Text>
+        <TextInput
+            style={styles.input}
+            onChangeText={(text) => setFormData({ ...formData, incidents_of_mistreatment: text })}
+            value={formData.incidents_of_mistreatment}
+        />
+
+        <Text>Gerou ocorrência policial?</Text>
+        <TextInput
+            style={styles.input}
+            onChangeText={(text) => setFormData({ ...formData, generated_a_police_report: text })}
+            value={formData.generated_a_police_report}
         />
       
         <SafeAreaView>

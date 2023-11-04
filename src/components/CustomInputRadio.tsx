@@ -1,31 +1,50 @@
-import React from 'react'
-import { Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Pressable, StyleSheet } from 'react-native';
 
 interface CustomInputRadioProps {
   options: string[];
-  label: string;
   selected: string;
   onSelect: (text: string) => void;
 }
 
-export default function CustomInputRadio({ label, options, selected, onSelect}: CustomInputRadioProps) {
+export default function CustomInputRadio({ options, onSelect}: CustomInputRadioProps) {
+  const [selected, setSelected] = useState(null);
+
+  const selectHandler = (value) => {
+    onSelect(value);
+    setSelected(value);
+  };
+  
   return (
-    <div>
-      <Text>{ label }</Text>
-      <input type="radio"
-          style={styles.input}
-          onSelect={onSelect}
-          value={selected}
-        />
-    </div>
+    <View style={styles.option}>
+      {
+        options.map((item, index) => {
+          return (
+            <Pressable
+              key={index}
+              style={
+                item === selected ? styles.selected : ''
+              }
+              onPress={() => selectHandler(item)}>
+              <Text > {item}</Text>
+            </Pressable>
+          );
+        })
+      }
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
-  input: {
-    height: 40,
+  option: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    height: 4,
     margin: 12,
-    borderWidth: 1,
-    padding: 10,
   },
+  selected: {
+    backgroundColor: 'red',
+    fontSize: 44,
+  }
 });
